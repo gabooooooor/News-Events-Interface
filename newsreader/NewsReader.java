@@ -11,6 +11,6 @@ package newsreader;
 public class NewsReader {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        new Database().createTable();
     }
 }
