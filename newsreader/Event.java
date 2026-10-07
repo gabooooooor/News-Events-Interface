@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package newsreader;
+import ro.umsft.gabriel.news.News;
 import java.sql.Timestamp;
 /**
  *
