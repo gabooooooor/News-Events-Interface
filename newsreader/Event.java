@@ -17,13 +17,13 @@ public class Event extends News{
             String source, String author, String publisher,
             Timestamp publishDate,
             String url, Timestamp creationDate,
-            Timestamp lastEditedDate, String language, 
+            Timestamp lastModifiedDate, String language, 
             String coverImage,
             Timestamp eventDateTime, String location)
     {
         super(title, description, source, author,
                 publisher,publishDate, url, creationDate,
-                lastEditedDate, language, coverImage);
+                lastModifiedDate, language, coverImage);
         this.eventDateTime = eventDateTime;
         this.location = location;
     }

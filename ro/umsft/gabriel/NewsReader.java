@@ -2,7 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
 
-package newsreader;
+package ro.umsft.gabriel;
+
+import ro.umsft.gabriel.databases.Database;
 
 /**
  *

@@ -21,7 +21,7 @@ public class News {
     private Timestamp publishDate;
     private String url;
     private Timestamp creationDate;
-    private Timestamp lastEditedDate;
+    private Timestamp lastModifiedDate;
     private String language;
     private String coverImage;
     
@@ -29,7 +29,7 @@ public class News {
             String source, String author, String publisher,
             Timestamp publishDate,
             String url, Timestamp creationDate,
-            Timestamp lastEditedDate, String language, 
+            Timestamp lastModifiedDate, String language, 
             String coverImage)
     {
         this.title = title;
@@ -40,7 +40,7 @@ public class News {
         this.publishDate = publishDate;
         this.url = url;
         this.creationDate = creationDate;
-        this.lastEditedDate = lastEditedDate;
+        this.lastModifiedDate = lastModifiedDate;
         this.language = language;
         this.coverImage = coverImage;
     }
@@ -54,7 +54,7 @@ public class News {
     public Timestamp getPublishDate(){return publishDate;}
     public String getUrl(){return url;}
     public Timestamp getCreationDate(){return creationDate;}
-    public Timestamp getLastEditedDate(){return lastEditedDate;}
+    public Timestamp getLastModifiedDate(){return lastModifiedDate;}
     public String getLanguage(){return language;}
     public String getCoverImage(){return coverImage;}
     
@@ -68,6 +68,6 @@ public class News {
     public void setUrl(String url){this.url = url;}
     public void setLanguage(String language){this.language = language;}
     public void setCoverImage(String coverImage){this.coverImage = coverImage;}
-    public void setLastEditedDate(Timestamp lastEditedDate){this.lastEditedDate = lastEditedDate;}
+    public void setLastModifiedDate(Timestamp lastModifiedDate){this.lastModifiedDate = lastModifiedDate;}
 }
 
