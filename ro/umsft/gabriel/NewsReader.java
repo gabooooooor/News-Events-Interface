@@ -5,6 +5,7 @@
 package ro.umsft.gabriel;
 
 import ro.umsft.gabriel.databases.Database;
+import ro.umsft.gabriel.rss.RSSSource;
 
 /**
  *
@@ -14,5 +15,6 @@ public class NewsReader {
 
     public static void main(String[] args) {
         new Database().createTable();
+        RSSSource testSource = new RSSSource();
     }
 }
