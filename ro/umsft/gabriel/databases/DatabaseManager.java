@@ -4,6 +4,7 @@ package ro.umsft.gabriel.databases;
 import java.util.*;
 import java.sql.*;
 import ro.umsft.gabriel.news.News;
+import ro.umsft.gabriel.NewsReader;
 
 public class DatabaseManager {
     
@@ -116,5 +117,11 @@ public class DatabaseManager {
             System.out.println("Error while getting the news: " + e.getMessage());
         }
         return newsList;
+    }
+    
+    // Inserts one event, duplicates (same title, date time and location) are ignored
+    public static void isertEvent(Event event)
+    {
+        
     }
 }
