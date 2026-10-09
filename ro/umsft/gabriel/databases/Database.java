@@ -24,7 +24,7 @@ public class Database {
     }
     
     // Creates the news and events tables if they do not exist yet
-    public void createTable()
+    public void createTables()
     {
         
         // The composite primary key (source, url) prevents duplicate news
