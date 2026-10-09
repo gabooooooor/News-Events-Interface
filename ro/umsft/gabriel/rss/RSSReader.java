@@ -16,6 +16,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import java.io.InputStream;
+import com.google.gson.Gson;
+import java.io.FileReader;
+
+
 
 /**
  *
@@ -157,5 +161,21 @@ public class RSSReader {
             System.out.println(rssSource.getName() + e.getMessage());
         }
         return newsList;
+    }
+    
+    // Reads the RSS sources from res/rss.json
+    public static List<RSSSource> loadSources()
+    {
+        Gson gson = new Gson();
+        try(FileReader reader = new FileReader("res/rss.json"))
+        {
+            RSSConfig config = gson.fromJson(reader, RSSConfig.class);
+            return config.getRssSources();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+            return new ArrayList<>();
+        }
     }
 }
