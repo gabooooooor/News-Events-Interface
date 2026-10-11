@@ -62,7 +62,8 @@ public class DatabaseManager {
     public static void deleteNews(String source, String url) {
         String sql = "DELETE FROM news WHERE source = ?"
                 + " AND url = ?";
-        try (Connection conn = database.connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = database.connect();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, source);
             ps.setString(2, url);
             ps.executeUpdate();
@@ -150,5 +151,48 @@ public class DatabaseManager {
             System.out.println("Error while getting the events: " + e.getMessage());
         }
         return eventList;
+    }
+    
+    // Updates an event, the key (title, event_datetime, location) identifies the row
+    public static void updateEvent(Event event) {
+        event.setLastModifiedDate(new Timestamp(System.currentTimeMillis()));
+        String sql = "UPDATE events SET description = ?, source = ?, author = ?,"
+                + " publisher = ?, publish_date = ?, url = ?, last_modified_date = ?,"
+                + " language = ?, cover_image = ? "
+                + "WHERE title = ? AND event_datetime = ? AND location = ?";
+        try (Connection conn = database.connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, event.getDescription());
+            ps.setString(2, event.getSource());
+            ps.setString(3, event.getAuthor());
+            ps.setString(4, event.getPublisher());
+            ps.setTimestamp(5, event.getPublishDate());
+            ps.setString(6, event.getUrl());
+            ps.setTimestamp(7, event.getLastModifiedDate());
+            ps.setString(8, event.getLanguage());
+            ps.setString(9, event.getCoverImage());
+            ps.setString(10, event.getTitle());
+            ps.setTimestamp(11, event.getEventDateTime());
+            ps.setString(12, event.getLocation());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error while updating events: " + e.getMessage());
+        }
+    }
+    
+    // Deletes the event identified by title, date time and location
+    public static void deleteEvent(String title,Timestamp dateTime, String location)
+    {
+        String sql = "DELETE FROM events WHERE title = ? "
+                + "AND event_datetime = ? AND location = ?";
+        try(Connection conn = database.connect();
+                PreparedStatement ps = conn.prepareStatement(sql))
+        {
+            ps.setString(1, title);
+            ps.setTimestamp(2, dateTime);
+            ps.setString(3, location);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error while deleting events: " + e.getMessage());
+        }
     }
 }
