@@ -131,6 +131,21 @@ public class DatabaseManager {
             }
         return newsList;
     }
+    
+    // Deletes every news and event from the database
+    public static void clearAll()
+    {
+        try(Connection conn = database.connect();
+                Statement stmt = conn.createStatement())
+        {
+            stmt.executeUpdate("DELETE FROM news");
+            stmt.executeUpdate("DELETE FROM events");
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Error while clearing the database: " + e.getMessage());
+        }
+    }
 
     // Inserts one event, duplicates (same title, date time and location) are ignored
     public static void insertEvent(Event event) {
