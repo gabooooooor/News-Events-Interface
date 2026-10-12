@@ -68,4 +68,19 @@ public class NewsService {
             return DatabaseManager.searchNews(keyword.trim());
         }
     }
+    
+    public void addNews(News news)
+    {
+        DatabaseManager.insertNews(news);
+    }
+    
+    public void updateNews(News news)
+    {
+        DatabaseManager.updateNews(news);
+    }
+    
+    public void deleteNews(News news)
+    {
+        DatabaseManager.deleteNews(news.getSource(), news.getUrl());
+    }
 }

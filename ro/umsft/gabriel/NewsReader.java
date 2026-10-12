@@ -10,6 +10,8 @@ import ro.umsft.gabriel.databases.DatabaseManager;
 import ro.umsft.gabriel.news.News;
 import ro.umsft.gabriel.service.NewsService;
 import java.util.List;
+import ro.umsft.gabriel.ui.MainWindow;
+import javax.swing.*;
 
 /**
  *
@@ -20,7 +22,6 @@ public class NewsReader {
     public static void main(String[] args) {
         new Database().createTables();
         NewsService newsService = new NewsService();
-        List<News> newsList = newsService.loadNews();
-        System.out.println("News loaded: " + newsList.size());
+        SwingUtilities.invokeLater(() -> new MainWindow(newsService).setVisible(true));
     }
 }

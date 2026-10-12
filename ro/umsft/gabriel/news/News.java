@@ -83,6 +83,10 @@ public class News {
     public void setCoverImage(String coverImage){this.coverImage = coverImage;}
     public void setLastModifiedDate(Timestamp lastModifiedDate){this.lastModifiedDate = lastModifiedDate;}
     
-    
+    @Override
+    public String toString()
+    {
+        return title;
+    }
 }
 
