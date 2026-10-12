@@ -12,7 +12,7 @@ package ro.umsft.gabriel.news;
 // The only place that knows the default cover image path
 public final class CoverImageResolver {
     
-    private static final String DEFAULT_IMAGE = "res/images/images (1).jpg";
+    private static final String DEFAULT_IMAGE = "res/images/def.jpg";
     
     // Returns the default image path if the given path is missing
     public static String resolve(String imagePath)

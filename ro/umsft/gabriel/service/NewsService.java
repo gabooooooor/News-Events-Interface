@@ -5,7 +5,6 @@
 package ro.umsft.gabriel.service;
 
 import java.util.*;
-import ro.umsft.gabriel.databases.Database;
 import ro.umsft.gabriel.databases.DatabaseManager;
 import ro.umsft.gabriel.news.News;
 import ro.umsft.gabriel.rss.RSSReader;
@@ -83,5 +82,10 @@ public class NewsService {
     public void clearAll()
     {
         DatabaseManager.clearAll();
+    }
+    
+    public List<News> getAllNews()
+    {
+        return DatabaseManager.getAllNews();
     }
 }

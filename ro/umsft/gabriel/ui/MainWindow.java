@@ -85,7 +85,7 @@ public class MainWindow extends JFrame{
     private void reloadNews()
     {
         listModel.clear();
-        for(News news : newsService.loadNews())
+        for(News news : newsService.getAllNews())
         {
             listModel.addElement(news);
         }
