@@ -34,6 +34,8 @@ public class MainWindow extends JFrame{
     private final JButton refreshButton = new JButton("Refresh");
     private final JLabel loadingLabel = new JLabel(" ");
     
+    private final JButton clearButton = new JButton("Clear DB");
+    
     public MainWindow(NewsService newsService)
     {
         this.newsService = newsService;
@@ -50,6 +52,7 @@ public class MainWindow extends JFrame{
         toolbar.add(searchButton);
         toolbar.add(refreshButton);
         toolbar.add(loadingLabel);
+        toolbar.add(clearButton);
         add(toolbar, BorderLayout.NORTH);
         
         add(buildSplitPane(), BorderLayout.CENTER);
@@ -65,6 +68,7 @@ public class MainWindow extends JFrame{
         deleteButton.addActionListener(e -> onDelete());
         searchButton.addActionListener(e -> onSearch());
         refreshButton.addActionListener(e -> onRefresh());
+        clearButton.addActionListener(e -> onClear());
         loadInBackground(false);
     }
     
@@ -262,6 +266,7 @@ public class MainWindow extends JFrame{
         deleteButton.setEnabled(!loading);
         searchButton.setEnabled(!loading);
         refreshButton.setEnabled(!loading);
+        clearButton.setEnabled(!loading);
         loadingLabel.setText(loading ? "Loading..." : " ");
     }
     
@@ -304,5 +309,18 @@ public class MainWindow extends JFrame{
     private void onRefresh()
     {
         loadInBackground(true);
+    }
+    
+    private void onClear()
+    {
+        int ok = JOptionPane.showConfirmDialog(
+            this,
+            "Delete all news from the database?",
+            "Clear DB",
+            JOptionPane.YES_NO_OPTION);
+        if(ok != JOptionPane.YES_OPTION){return;}
+        newsService.clearAll();
+        listModel.clear();
+        showDetails(null);
     }
 }

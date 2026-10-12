@@ -83,4 +83,9 @@ public class NewsService {
     {
         DatabaseManager.deleteNews(news.getSource(), news.getUrl());
     }
+    
+    public void clearAll()
+    {
+        DatabaseManager.clearAll();
+    }
 }
