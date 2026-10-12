@@ -4,7 +4,7 @@
  */
 package ro.umsft.gabriel.news;
 
-import java.sql.Timestamp;
+import java.sql.*;
 /**
  *
  * @author ministar
@@ -82,5 +82,7 @@ public class News {
     public void setLanguage(String language){this.language = language;}
     public void setCoverImage(String coverImage){this.coverImage = coverImage;}
     public void setLastModifiedDate(Timestamp lastModifiedDate){this.lastModifiedDate = lastModifiedDate;}
+    
+    
 }
 

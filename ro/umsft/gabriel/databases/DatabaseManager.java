@@ -71,6 +71,24 @@ public class DatabaseManager {
             System.out.println("Error while deleting news: " + e.getMessage());
         }
     }
+    
+    // Builds one News object from the current row of the ResultSet
+    private static News readNews(ResultSet rs) throws SQLException
+    {
+        return new News(
+        rs.getString("title"),
+        rs.getString("description"),
+        rs.getString("source"),
+        rs.getString("author"),
+        rs.getString("publisher"),
+        rs.getTimestamp("publish_date"),
+        rs.getString("url"),
+        rs.getTimestamp("creation_date"),
+        rs.getTimestamp("last_modified_date"),
+        rs.getString("language"),
+        rs.getString("cover_image")
+        );
+    }
 
     // Reads every news item from the database, newest first
     public static List<News> getAllNews() {
@@ -78,23 +96,39 @@ public class DatabaseManager {
         String sql = "SELECT * FROM news ORDER BY publish_date DESC";
         try (Connection conn = database.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                News news = new News(
-                        rs.getString("title"),
-                        rs.getString("description"),
-                        rs.getString("source"),
-                        rs.getString("author"),
-                        rs.getString("publisher"),
-                        rs.getTimestamp("publish_date"),
-                        rs.getString("url"),
-                        rs.getTimestamp("creation_date"),
-                        rs.getTimestamp("last_modified_date"),
-                        rs.getString("language"),
-                        rs.getString("cover_image"));
-                newsList.add(news);
+                newsList.add(readNews(rs));
             }
         } catch (SQLException e) {
             System.out.println("Error while getting the news: " + e.getMessage());
         }
+        return newsList;
+    }
+    
+    // Returns the news whose title or description contains the keyword
+    public static List<News> searchNews(String keyword)
+    {
+        String sql = "SELECT * FROM news WHERE title LIKE ? OR description LIKE ? "
+                + "ORDER BY publish_date DESC";
+        String pattern = "%" + keyword + "%";
+        List<News> newsList = new ArrayList<>();
+        try(Connection conn = database.connect();
+                PreparedStatement ps = conn.prepareStatement(sql))
+        {
+            ps.setString(1, pattern);
+            ps.setString(2, pattern);
+            try(ResultSet rs = ps.executeQuery())
+            {
+                while(rs.next())
+                {
+                    newsList.add(readNews(rs));
+                }
+            }
+            
+        }
+        catch(SQLException e)
+            {
+                System.out.println("Error while searching news: " + e.getMessage());
+            }
         return newsList;
     }
 
