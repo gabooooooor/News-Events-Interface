@@ -4,9 +4,6 @@
  */
 package ro.umsft.gabriel.service;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.*;
 import ro.umsft.gabriel.databases.Database;
 import ro.umsft.gabriel.databases.DatabaseManager;
@@ -22,7 +19,6 @@ import ro.umsft.gabriel.rss.RSSSource;
 // Coordinates RSS downloading and database access for the UI
 public class NewsService {
     
-    private static final Database database = new Database();
     // Downloads every RSS source and saves the news into the database
     private void downloadAllNews()
     {
