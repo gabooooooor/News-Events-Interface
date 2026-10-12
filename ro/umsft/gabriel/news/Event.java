@@ -3,13 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package ro.umsft.gabriel.news;
-import ro.umsft.gabriel.news.News;
 import java.sql.Timestamp;
 /**
  *
  * @author ministar
  */
-public class Event extends News{
+public class Event extends ContentItem{
     
     private Timestamp eventDateTime;
     private String location;
