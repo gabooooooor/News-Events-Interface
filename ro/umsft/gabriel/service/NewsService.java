@@ -57,7 +57,7 @@ public class NewsService {
         return DatabaseManager.getAllNews();
     }
     
-    public List<News> serach(String keyword)
+    public List<News> search(String keyword)
     {
         if(keyword == null || keyword.isBlank())
         {

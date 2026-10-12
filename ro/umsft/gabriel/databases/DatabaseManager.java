@@ -146,6 +146,33 @@ public class DatabaseManager {
             System.out.println("Error while clearing the database: " + e.getMessage());
         }
     }
+    
+    // Returns the news identified by source and url, or null if it does not exist
+    public static News getNews(String source, String url)
+    {
+        String sql = "SELECT * FROM news WHERE source = ? "
+                + "AND url = ?";
+        try(Connection conn = database.connect();
+                PreparedStatement ps = conn.prepareStatement(sql))
+        {
+            ps.setString(1, source);
+            ps.setString(2, url);
+            try(ResultSet rs = ps.executeQuery())
+            {
+                if(rs.next())
+                {
+                    return readNews(rs);
+                }
+                else {return null;}
+            }
+            
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Error while getting news: " + e.getMessage());
+        }
+        return null;
+    }
 
     // Inserts one event, duplicates (same title, date time and location) are ignored
     public static void insertEvent(Event event) {
