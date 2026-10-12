@@ -28,7 +28,7 @@ public class Event extends News{
         if(eventDateTime == null){
             throw new IllegalArgumentException("EventDateTime is required");
         }
-        if(location.isBlank()){
+        if(location == null || location.isBlank()){
             throw new IllegalArgumentException("Location is required");
         }
         this.eventDateTime = eventDateTime;

@@ -152,7 +152,7 @@ public class DatabaseManager {
         //Insetring the new data
         String sql = "INSERT OR IGNORE INTO events (title, description, source,"
                 + "author, publisher, publish_date, url, creation_date,"
-                + "last_modified_date, language, cover_image, event_datetime, location) "
+                + "last_modified_date, language, cover_image, event_date_time, location) "
                 + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try (Connection conn = database.connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, event.getTitle());
@@ -177,7 +177,7 @@ public class DatabaseManager {
     // Reads every event from the database, earliest event first
     public static List<Event> getAllEvents() {
         List<Event> eventList = new ArrayList<>();
-        String sql = "SELECT * FROM events ORDER BY event_datetime ASC";
+        String sql = "SELECT * FROM events ORDER BY event_date_time ASC";
         try (Connection conn = database.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 Event event = new Event(
@@ -192,7 +192,7 @@ public class DatabaseManager {
                         rs.getTimestamp("last_modified_date"),
                         rs.getString("language"),
                         rs.getString("cover_image"),
-                        rs.getTimestamp("event_datetime"),
+                        rs.getTimestamp("event_date_time"),
                         rs.getString("location"));
                 eventList.add(event);
             }
@@ -208,7 +208,7 @@ public class DatabaseManager {
         String sql = "UPDATE events SET description = ?, source = ?, author = ?,"
                 + " publisher = ?, publish_date = ?, url = ?, last_modified_date = ?,"
                 + " language = ?, cover_image = ? "
-                + "WHERE title = ? AND event_datetime = ? AND location = ?";
+                + "WHERE title = ? AND event_date_time = ? AND location = ?";
         try (Connection conn = database.connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, event.getDescription());
             ps.setString(2, event.getSource());
