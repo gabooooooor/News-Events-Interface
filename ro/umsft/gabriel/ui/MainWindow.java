@@ -7,6 +7,7 @@ package ro.umsft.gabriel.ui;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.Timestamp;
+import java.util.List;
 import ro.umsft.gabriel.news.CoverImageResolver;
 import ro.umsft.gabriel.service.NewsService;
 import ro.umsft.gabriel.news.News;
@@ -30,6 +31,9 @@ public class MainWindow extends JFrame{
     private final JTextField searchField = new JTextField(18);
     private final JButton searchButton = new JButton("Search");
     
+    private final JButton refreshButton = new JButton("Refresh");
+    private final JLabel loadingLabel = new JLabel(" ");
+    
     public MainWindow(NewsService newsService)
     {
         this.newsService = newsService;
@@ -44,7 +48,8 @@ public class MainWindow extends JFrame{
         toolbar.add(deleteButton);
         toolbar.add(searchField);
         toolbar.add(searchButton);
-        searchButton.addActionListener(e -> onSearch());
+        toolbar.add(refreshButton);
+        toolbar.add(loadingLabel);
         add(toolbar, BorderLayout.NORTH);
         
         add(buildSplitPane(), BorderLayout.CENTER);
@@ -58,7 +63,9 @@ public class MainWindow extends JFrame{
         addButton.addActionListener(e -> onAdd());
         editButton.addActionListener(e -> onEdit());
         deleteButton.addActionListener(e -> onDelete());
-        reloadNews();
+        searchButton.addActionListener(e -> onSearch());
+        refreshButton.addActionListener(e -> onRefresh());
+        loadInBackground(false);
     }
     
     private JSplitPane buildSplitPane()
@@ -246,5 +253,56 @@ public class MainWindow extends JFrame{
         {
             listModel.addElement(news);
         }
+    }
+    
+    private void setLoading(boolean loading)
+    {
+        addButton.setEnabled(!loading);
+        editButton.setEnabled(!loading);
+        deleteButton.setEnabled(!loading);
+        searchButton.setEnabled(!loading);
+        refreshButton.setEnabled(!loading);
+        loadingLabel.setText(loading ? "Loading..." : " ");
+    }
+    
+    private void loadInBackground(boolean isRefresh)
+    {
+        setLoading(true);
+        SwingWorker<List<News>, Void> worker = new SwingWorker<>(){
+            @Override
+            protected List<News> doInBackground()
+            {
+                if(isRefresh)
+                {
+                    return newsService.refresh();
+                }
+                return newsService.loadNews();
+            }
+            
+            @Override
+            protected void done()
+            {
+                try
+                {
+                    listModel.clear();
+                    for(News news : get())
+                    {
+                        listModel.addElement(news);
+                    }
+                }
+                catch(Exception e)
+                {
+                    JOptionPane.showMessageDialog(MainWindow.this, e.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                setLoading(false);
+            }
+        };
+        worker.execute();
+    }
+    
+    private void onRefresh()
+    {
+        loadInBackground(true);
     }
 }
