@@ -17,11 +17,10 @@ import java.util.List;
  */
 public class NewsReader {
 
-    public static void main(String[] args) {
-        new Database().createTables();
+    // Downloads every RSS source and saves the news into the database
+    private static void downloadAllNews()
+    {
         List<RSSSource> sources = RSSReader.loadSources();
-        System.out.println("Loaded sources: " + sources.size());
-        
         for(RSSSource source : sources)
         {
             List<News> fetched = RSSReader.fetchNews(source);
@@ -31,6 +30,23 @@ public class NewsReader {
                 DatabaseManager.insertNews(news);
             }
         }
-        System.out.println("News in the database: " + DatabaseManager.getAllNews().size());
+    }
+    // Loads the news from SQLite, downloads from RSS only if the database is empty
+    private static List<News> loadNews()
+    {
+        List<News> newsList = DatabaseManager.getAllNews();
+        if(newsList.isEmpty())
+        {
+            System.out.println("First start, downloading the news ...");
+            downloadAllNews();
+            newsList = DatabaseManager.getAllNews();
+        }
+        return newsList;
+    }
+    
+    public static void main(String[] args) {
+        new Database().createTables();
+        List<News> newsList = loadNews();
+        System.out.println("News loaded: " + newsList.size());
     }
 }
