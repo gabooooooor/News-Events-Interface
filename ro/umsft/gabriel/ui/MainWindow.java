@@ -27,6 +27,9 @@ public class MainWindow extends JFrame{
     private final JButton editButton = new JButton("Edit");
     private final JButton deleteButton = new JButton("Delete");
     
+    private final JTextField searchField = new JTextField(18);
+    private final JButton searchButton = new JButton("Search");
+    
     public MainWindow(NewsService newsService)
     {
         this.newsService = newsService;
@@ -39,6 +42,9 @@ public class MainWindow extends JFrame{
         toolbar.add(addButton);
         toolbar.add(editButton);
         toolbar.add(deleteButton);
+        toolbar.add(searchField);
+        toolbar.add(searchButton);
+        searchButton.addActionListener(e -> onSearch());
         add(toolbar, BorderLayout.NORTH);
         
         add(buildSplitPane(), BorderLayout.CENTER);
@@ -231,5 +237,14 @@ public class MainWindow extends JFrame{
         if (ok != JOptionPane.YES_OPTION) { return; }
         newsService.deleteNews(selected);
         reloadNews();
+    }
+    
+    private void onSearch()
+    {
+        listModel.clear();
+        for(News news : newsService.search(searchField.getText()))
+        {
+            listModel.addElement(news);
+        }
     }
 }
