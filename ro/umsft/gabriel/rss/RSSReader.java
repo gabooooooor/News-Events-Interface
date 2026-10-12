@@ -12,6 +12,7 @@ import java.util.*;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import ro.umsft.gabriel.news.News;
+import ro.umsft.gabriel.news.CoverImageResolver;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
@@ -121,34 +122,41 @@ public class RSSReader {
                NodeList items = document.getElementsByTagName("item");
                for(int i=0; i<items.getLength(); i++)
                {
-                   Element item = (Element) items.item(i);
-                   // Read the values from the RSS tags
-                   String title = getText(item, "title");
-                   String description = getText(item, "description");
-                   String link = getText(item, "link");
-                   String author = getText(item, "author");
-                   Timestamp publishDate = parseDate(getText(item, "pubDate"));
-                   Timestamp now = new Timestamp(System.currentTimeMillis());
+                   try
+                   {
+                        Element item = (Element) items.item(i);
+                        // Read the values from the RSS tags
+                        String title = getText(item, "title");
+                        String description = getText(item, "description");
+                        String link = getText(item, "link");
+                        String author = getText(item, "author");
+                        Timestamp publishDate = parseDate(getText(item, "pubDate"));
+                        Timestamp now = new Timestamp(System.currentTimeMillis());
                    
-                   if (title.isEmpty()) {title = "No title";}
-                   if (author.isEmpty()) {author  = getText(item, "do:creator");}
-                   if (author.isEmpty()) {author = "Unknonw";}
+                        if (title.isEmpty()) {title = "No title";}
+                        if (author.isEmpty()) {author  = getText(item, "dc:creator");}
+                        if (author.isEmpty()) {author = "Unknown";}
                    
-                   // Build the News object, the order matches the News constructor
-                   News news = new News(
-                   title,
-                   description,
-                   rssSource.getName(),//source
-                   author,
-                   rssSource.getName(),//publisher
-                   publishDate,
-                   link,
-                   now,//creationDate
-                   now,//lastModifiedDate
-                   rssSource.getLanguage(),
-                   "res/images/default.jpg"
-                   );
-                   newsList.add(news);
+                        // Build the News object, the order matches the News constructor
+                        News news = new News(
+                        title,
+                        description,
+                        rssSource.getName(),//source
+                        author,
+                        rssSource.getName(),//publisher
+                        publishDate,
+                        link,
+                        now,//creationDate
+                        now,//lastModifiedDate
+                        rssSource.getLanguage(),
+                        CoverImageResolver.resolve(null)
+                        );
+                        newsList.add(news);
+                    }
+                   catch(IllegalArgumentException e)
+                   {
+                       System.out.println("Skipped invalid item: " + e.getMessage());
+                   }
                }
             }
             catch(Exception e)

@@ -32,6 +32,19 @@ public class News {
             Timestamp lastModifiedDate, String language, 
             String coverImage)
     {
+        // Validate the required fields before storing them
+        if(title == null || title.isBlank()){
+            throw new IllegalArgumentException("Title is required");
+        }
+        if(source == null || source.isBlank()){
+            throw new IllegalArgumentException("Source is required");
+        }
+        if(url == null || url.isBlank()){
+            throw new IllegalArgumentException("Url is required");
+        }
+        if(language == null || language.isBlank()){
+            throw new IllegalArgumentException("Language is required");
+        }
         this.title = title;
         this.description = description;
         this.source = source;

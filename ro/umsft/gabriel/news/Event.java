@@ -25,6 +25,12 @@ public class Event extends News{
         super(title, description, source, author,
                 publisher,publishDate, url, creationDate,
                 lastModifiedDate, language, coverImage);
+        if(eventDateTime == null){
+            throw new IllegalArgumentException("EventDateTime is required");
+        }
+        if(location.isBlank()){
+            throw new IllegalArgumentException("Location is required");
+        }
         this.eventDateTime = eventDateTime;
         this.location = location;
     }
