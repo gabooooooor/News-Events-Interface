@@ -58,7 +58,7 @@ public class Database {
                 "cover_image TEXT," +
                 "event_date_time TIMESTAMP NOT NULL," +
                 "location TEXT NOT NULL," +
-                "PRIMARY KEY (event_date_time, location)" +
+                "PRIMARY KEY (title, event_date_time, location)" +
                 ")";
         
         try(Connection conn = DriverManager.getConnection(databaseUrl);

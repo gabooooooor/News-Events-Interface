@@ -4,6 +4,7 @@
  */
 package ro.umsft.gabriel.news;
 
+import java.io.File;
 /**
  *
  * @author ministar
@@ -17,7 +18,7 @@ public final class CoverImageResolver {
     // Returns the default image path if the given path is missing
     public static String resolve(String imagePath)
     {
-        if(imagePath != null && !imagePath.isBlank() && new java.io.File(imagePath).isFile())
+        if(imagePath != null && !imagePath.isBlank() && new File(imagePath).isFile())
         {
             return imagePath;
         }

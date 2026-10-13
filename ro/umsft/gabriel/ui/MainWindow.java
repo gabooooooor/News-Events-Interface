@@ -36,6 +36,8 @@ public class MainWindow extends JFrame{
     
     private final JButton clearButton = new JButton("Clear DB");
     
+    private final JProgressBar loadingBar = new JProgressBar();
+    
     public MainWindow(NewsService newsService)
     {
         this.newsService = newsService;
@@ -43,6 +45,9 @@ public class MainWindow extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1100, 700);
         setLocationRelativeTo(null);
+        
+        loadingBar.setIndeterminate(true);
+        loadingBar.setVisible(false);
         
         JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
         toolbar.add(addButton);
@@ -52,11 +57,29 @@ public class MainWindow extends JFrame{
         toolbar.add(searchButton);
         toolbar.add(refreshButton);
         toolbar.add(loadingLabel);
+        toolbar.add(loadingBar);
         toolbar.add(clearButton);
         add(toolbar, BorderLayout.NORTH);
         
         add(buildSplitPane(), BorderLayout.CENTER);
         newsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
+        /*
+        newsList.setCellRenderer(new DefaultListCellRenderer()
+                {
+                    @Override
+                    public Component getListCellRendererComponent(JList<?> list, Object value,
+                            int index, boolean isSelected, boolean cellHasFocus)
+                    {
+                        JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                        News news = (News) value;
+                        String title = news.getTitle().replace("&", "&amp;").replace("<", "&lt;");
+                        label.setText("<html><div style='width:290px'><b>" + title + "</b><br>"
+                        + "<span style='color:gray'>" + news.getSource() + "</span></div></html>");
+                        label.setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
+                        return label;
+                    }
+                });*/
         newsList.addListSelectionListener(e -> {
             if(!e.getValueIsAdjusting()){
                 showDetails(newsList.getSelectedValue());
@@ -267,7 +290,8 @@ public class MainWindow extends JFrame{
         searchButton.setEnabled(!loading);
         refreshButton.setEnabled(!loading);
         clearButton.setEnabled(!loading);
-        loadingLabel.setText(loading ? "Loading..." : " ");
+        loadingBar.setVisible(loading);
+        loadingLabel.setText(loading ? "Loading" : " ");
     }
     
     private void loadInBackground(boolean isRefresh)

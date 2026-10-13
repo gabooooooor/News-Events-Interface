@@ -259,7 +259,7 @@ public class DatabaseManager {
     public static void deleteEvent(String title,Timestamp dateTime, String location)
     {
         String sql = "DELETE FROM events WHERE title = ? "
-                + "AND event_datetime = ? AND location = ?";
+                + "AND event_date_time = ? AND location = ?";
         try(Connection conn = database.connect();
                 PreparedStatement ps = conn.prepareStatement(sql))
         {

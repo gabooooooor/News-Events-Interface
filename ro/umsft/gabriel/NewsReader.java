@@ -8,6 +8,8 @@ import ro.umsft.gabriel.databases.Database;
 import ro.umsft.gabriel.service.NewsService;
 import ro.umsft.gabriel.ui.MainWindow;
 import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
+import java.awt.Color;
 
 /**
  *
@@ -16,6 +18,24 @@ import javax.swing.*;
 public class NewsReader {
 
     public static void main(String[] args) {
+        
+        UIManager.put("nimbusBase", new Color(30, 80, 150));
+        try
+        {
+            for(LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
+            {
+                if ("Nimbus".equals(info.getName()))
+                {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println("Error while setting the look and feel: " + e.getMessage());
+        }
+        
         new Database().createTables();
         NewsService newsService = new NewsService();
         SwingUtilities.invokeLater(() -> new MainWindow(newsService).setVisible(true));
